@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -28,7 +29,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.projects.create');
     }
 
     /**
@@ -39,7 +40,29 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        $form_data = $request->all();
+
+        $validatedData = $request->validate([
+            'title' => 'required|max:100|unique:projects',
+            'content' => 'required',
+        ],
+        [
+            'title.required' => 'Il titolo è obbligatorio',
+            'title.max' => 'Il titolo non deve superare i 100 caratteri',
+            'title.unique' => 'Questo titolo esiste già',
+            'content.required' => 'Il contenuto è obbligatorio',
+        ]
+        );
+
+        $new_project = new Project();
+
+        $new_project->title = $form_data['title'];
+        $new_project->content = $form_data['content'];
+        $slug = Str::slug($new_project->title, '-');
+        $new_project->slug = $slug;
+        $new_project->save();
+
+        return redirect()->route('admin.projects.index', ['project' => $new_project->id]);
     }
 
     /**

@@ -3,8 +3,11 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-12">
-             I miei Progetti
+            <div class="col-12 d-flex justify-content-between align-items-center">
+             <h2>
+                Projects
+            </h2>
+             <a href="{{ route('admin.projects.create') }}" class="btn btn-sm btn-secondary"><i class="fa-solid fa-pencil"></i></a>
             </div>
             <div class="col-12">
                 <table class="table table-striped">
@@ -25,7 +28,9 @@
                                 <td>{{ $project->slug }}</td>
                                 <td>{{ $project->content }}</td>
                                 <td>
-                                    <a href="{{ route('admin.projects.show', ['project' => $project->id]) }}" class="btn btn-sm btn-primary"><i class="fa-solid fa-magnifying-glass"></i></a>
+                                    <div class="d-flex">
+                                        <a href="{{ route('admin.projects.show', ['project' => $project->id]) }}" class="btn btn-sm btn-primary me-1"><i class="fa-solid fa-magnifying-glass"></i></a>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
