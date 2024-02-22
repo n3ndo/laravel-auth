@@ -84,7 +84,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        $project = Project::find($project->id);
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**
@@ -96,7 +97,17 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $form_data = $request->all();
+
+        $project = Project::find($project->id);
+
+        $project->title = $form_data['title'];
+        $project->content = $form_data['content'];
+        $slug = Str::slug($project->title, '-');
+        $project->slug = $slug;
+        $project->update();
+
+        return redirect()->route('admin.projects.show', ['project' => $project->id]);
     }
 
     /**
