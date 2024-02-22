@@ -7,7 +7,7 @@
              I miei Progetti
             </div>
             <div class="col-12">
-                <table class="table-striped">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -24,6 +24,9 @@
                                 <td>{{ $project->title }}</td>
                                 <td>{{ $project->slug }}</td>
                                 <td>{{ $project->content }}</td>
+                                <td>
+                                    <a href="{{ route('admin.projects.show', ['project' => $project->id]) }}" class="btn btn-sm btn-primary"><i class="fa-solid fa-magnifying-glass"></i></a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
