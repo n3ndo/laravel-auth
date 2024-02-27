@@ -43,9 +43,12 @@ class ProjectController extends Controller
     {
         $form_data = $request->all();
 
+        $new_project = new Project();
+        
         if($request->hasFile('cover_image')){
             $path = Storage::disk('public')->put('project_image', $form_data['cover_image']);
             $form_data['cover_image'] = $path;
+
         }
 
         $validatedData = $request->validate([
@@ -62,12 +65,12 @@ class ProjectController extends Controller
         ]
         );
 
-        $new_project = new Project();
 
         $new_project->title = $form_data['title'];
         $new_project->content = $form_data['content'];
         $slug = Str::slug($new_project->title, '-');
         $new_project->slug = $slug;
+        $new_project->cover_image = $form_data['cover_image'];
         $new_project->save();
 
         return redirect()->route('admin.projects.index', ['project' => $new_project->id]);
