@@ -16,8 +16,16 @@
                         @endforeach
                     </div>
                 @endif
-                <form action="{{ route('admin.projects.store')}}" method="POST" class="form-control my-4">
+                <form action="{{ route('admin.projects.store')}}" method="POST" class="form-control my-4" enctype="multipart/form-data">
                     @csrf
+                    
+                    <label for="cover_image">Aggiungi un'immagine</label>
+                    <input type="file" name="cover_image" id="cover_image" class="form-control" required @error('cover_image') is-invalid @enderror>
+
+                @error('cover_image')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+
                     <label for="title">Titolo</label>
                     <input type="text" name="title" id="title" class="form-control" required
                     placeholder="Inserisci il titolo" value="{{ old('title') }}">

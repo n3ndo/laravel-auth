@@ -7,6 +7,7 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -42,15 +43,22 @@ class ProjectController extends Controller
     {
         $form_data = $request->all();
 
+        if($request->hasFile('cover_image')){
+            $path = Storage::disk('public')->put('project_image', $form_data['cover_image']);
+            $form_data['cover_image'] = $path;
+        }
+
         $validatedData = $request->validate([
             'title' => 'required|max:100|unique:projects',
             'content' => 'required',
+            'cover_image' => 'image',
         ],
         [
             'title.required' => 'Il titolo è obbligatorio',
             'title.max' => 'Il titolo non deve superare i 100 caratteri',
             'title.unique' => 'Questo titolo esiste già',
             'content.required' => 'Il contenuto è obbligatorio',
+            
         ]
         );
 
